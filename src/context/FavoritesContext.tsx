@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Property } from '../data/properties';
-import { toast } from '@/components/ui/sonner';
+import { toast } from "sonner";
 
 type FavoritesContextType = {
   favorites: Property[];
