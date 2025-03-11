@@ -15,7 +15,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-1 md:pt-0 pt-16 pb-16 md:pb-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -29,7 +29,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </motion.div>
         </AnimatePresence>
       </main>
-      <Footer />
+      <Footer className="mt-auto md:block hidden" />
     </div>
   );
 };

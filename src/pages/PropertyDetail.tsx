@@ -1,25 +1,35 @@
 
-import { useParams } from "react-router-dom";
-import { Layout } from "@/components/Layout";
-import { Button } from "@/components/ui/button";
-import { useFavorites } from "@/context/FavoritesContext";
-import { properties } from "@/data/properties";
-import { ArrowLeft, Bed, Bath, MapPin, Ruler, Heart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Heart, BedDouble, Bath, ArrowLeft, Share2, SquareFeet, Calendar } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { properties } from '@/data/properties';
+import { useFavorites } from '@/context/FavoritesContext';
+import { Link } from 'react-router-dom';
 
 const PropertyDetail = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const property = properties.find(p => p.id === id);
-  const { toggleFavorite, isFavorite } = useFavorites();
+  const { favorites, toggleFavorite } = useFavorites();
+  const isFavorite = favorites.some(p => p.id === id);
+
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   
   if (!property) {
     return (
-      <div className="pt-24 pb-16 container mx-auto px-4 text-center">
-        <h1 className="text-3xl font-bold mb-6">Property Not Found</h1>
-        <p className="text-muted-foreground mb-6">The property you're looking for doesn't exist or has been removed.</p>
-        <Button asChild>
-          <Link to="/properties">Browse Other Properties</Link>
-        </Button>
+      <div className="pt-24 pb-16 text-center">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl font-bold mb-4">Property Not Found</h1>
+          <p className="text-muted-foreground mb-6">
+            The property you are looking for does not exist or has been removed.
+          </p>
+          <Button asChild>
+            <Link to="/properties">Browse Properties</Link>
+          </Button>
+        </div>
       </div>
     );
   }
@@ -27,138 +37,145 @@ const PropertyDetail = () => {
   return (
     <div className="pt-24 pb-16">
       <div className="container mx-auto px-4">
-        {/* Back button */}
-        <div className="mb-6">
-          <Button variant="ghost" asChild className="flex items-center text-muted-foreground hover:text-foreground">
-            <Link to="/properties">
-              <ArrowLeft className="mr-2 h-4 w-4" /> Back to Properties
+        {/* Back Button and Actions */}
+        <div className="flex justify-between items-center mb-6">
+          <Button variant="ghost" size="sm" asChild className="hover:bg-transparent p-0">
+            <Link to="/properties" className="flex items-center text-muted-foreground hover:text-foreground">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Properties
             </Link>
           </Button>
-        </div>
-        
-        {/* Property Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">{property.title}</h1>
-            <div className="flex items-center text-muted-foreground">
-              <MapPin className="h-4 w-4 mr-1" />
-              <span>{property.location.address}, {property.location.city}</span>
-            </div>
-          </div>
-          <div className="mt-4 md:mt-0 flex items-center">
-            <div className="text-2xl font-bold mr-4">
-              ${property.price.toLocaleString()}
-              {property.status === 'rent' && <span className="text-muted-foreground text-base font-normal">/mo</span>}
-            </div>
-            <Button 
-              variant="outline" 
-              size="icon" 
+          
+          <div className="flex space-x-2">
+            <Button variant="outline" size="sm" className="h-9 flex items-center">
+              <Share2 className="h-4 w-4 mr-1" />
+              Share
+            </Button>
+            
+            <Button
+              variant={isFavorite ? "default" : "outline"}
+              size="sm"
+              className={`h-9 flex items-center ${isFavorite ? 'bg-red-500 hover:bg-red-600 text-white border-red-500' : ''}`}
               onClick={() => toggleFavorite(property)}
-              className={isFavorite(property.id) ? "text-red-500" : ""}
             >
-              <Heart className={`h-5 w-5 ${isFavorite(property.id) ? "fill-current" : ""}`} />
+              <Heart className={`h-4 w-4 mr-1 ${isFavorite ? 'fill-white' : ''}`} />
+              {isFavorite ? 'Saved' : 'Save'}
             </Button>
           </div>
         </div>
         
-        {/* Property Image */}
-        <div className="rounded-lg overflow-hidden mb-8">
-          <img 
-            src={property.image} 
-            alt={property.title}
-            className="w-full h-auto object-cover md:h-[500px]"
-          />
+        {/* Property Title and Price */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold mb-2">{property.title}</h1>
+          <div className="flex items-center justify-between">
+            <div className="text-muted-foreground">
+              {property.address}, {property.city}, {property.state} {property.zip}
+            </div>
+            <div className="text-2xl font-bold text-primary">${property.price.toLocaleString()}</div>
+          </div>
         </div>
         
-        {/* Property Details */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          <div className="md:col-span-2">
-            <div className="bg-white rounded-lg border border-border/60 shadow-sm p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">Property Details</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                <div className="flex items-center">
-                  <Bed className="h-5 w-5 mr-2 text-muted-foreground" />
-                  <div>
-                    <p className="font-medium">{property.bedrooms}</p>
-                    <p className="text-sm text-muted-foreground">Bedrooms</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <Bath className="h-5 w-5 mr-2 text-muted-foreground" />
-                  <div>
-                    <p className="font-medium">{property.bathrooms}</p>
-                    <p className="text-sm text-muted-foreground">Bathrooms</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <Ruler className="h-5 w-5 mr-2 text-muted-foreground" />
-                  <div>
-                    <p className="font-medium">{property.squareFootage}</p>
-                    <p className="text-sm text-muted-foreground">Sq Ft</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <div className="h-5 w-5 mr-2 rounded bg-primary flex items-center justify-center text-white text-xs">
-                    {property.type.charAt(0).toUpperCase()}
-                  </div>
-                  <div>
-                    <p className="font-medium capitalize">{property.type}</p>
-                    <p className="text-sm text-muted-foreground">Type</p>
-                  </div>
-                </div>
-              </div>
-              
-              <h3 className="text-lg font-semibold mb-2">Description</h3>
-              <p className="text-muted-foreground mb-6">{property.description}</p>
-              
-              <h3 className="text-lg font-semibold mb-2">Features</h3>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-muted-foreground">
-                {property.features?.map((feature, index) => (
-                  <li key={index} className="flex items-center">
-                    <div className="w-1.5 h-1.5 rounded-full bg-primary mr-2"></div>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
+        {/* Property Images */}
+        <div className="mb-8">
+          <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-2">
+            <img 
+              src={property.images[activeImageIndex]} 
+              alt={property.title} 
+              className="w-full h-full object-cover"
+            />
           </div>
           
-          <div>
-            <div className="bg-white rounded-lg border border-border/60 shadow-sm p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">Contact Agent</h2>
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-muted rounded-full mr-3 flex items-center justify-center">
-                  <span className="text-lg font-medium">JD</span>
-                </div>
-                <div>
-                  <p className="font-medium">John Doe</p>
-                  <p className="text-sm text-muted-foreground">Senior Agent</p>
-                </div>
+          <div className="grid grid-cols-5 gap-2">
+            {property.images.slice(0, 5).map((image, i) => (
+              <button 
+                key={i} 
+                className={`aspect-video bg-muted rounded-lg overflow-hidden border-2 ${activeImageIndex === i ? 'border-primary' : 'border-transparent'}`}
+                onClick={() => setActiveImageIndex(i)}
+              >
+                <img 
+                  src={image} 
+                  alt={`Property image ${i+1}`} 
+                  className="w-full h-full object-cover"
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+        
+        {/* Property Highlights */}
+        <Card className="p-6 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="flex flex-col items-center">
+              <div className="bg-primary/10 p-3 rounded-full mb-2">
+                <BedDouble className="h-5 w-5 text-primary" />
               </div>
-              <div className="space-y-3 mb-4">
-                <p className="text-sm">
-                  <span className="text-muted-foreground">Email: </span>
-                  john.doe@example.com
-                </p>
-                <p className="text-sm">
-                  <span className="text-muted-foreground">Phone: </span>
-                  (123) 456-7890
-                </p>
-              </div>
-              <Button className="w-full">Schedule Viewing</Button>
+              <div className="text-muted-foreground text-sm">Bedrooms</div>
+              <div className="font-semibold">{property.beds}</div>
             </div>
             
-            <div className="bg-white rounded-lg border border-border/60 shadow-sm p-6">
-              <h2 className="text-xl font-semibold mb-4">Location</h2>
-              <div className="bg-muted h-48 rounded flex items-center justify-center mb-2">
-                <MapPin className="h-6 w-6 text-muted-foreground" />
-                <span className="ml-2 text-muted-foreground">Map View</span>
+            <div className="flex flex-col items-center">
+              <div className="bg-primary/10 p-3 rounded-full mb-2">
+                <Bath className="h-5 w-5 text-primary" />
               </div>
-              <p className="text-sm text-muted-foreground">
-                {property.location.address}, {property.location.city}, {property.location.state} {property.location.zipCode}
+              <div className="text-muted-foreground text-sm">Bathrooms</div>
+              <div className="font-semibold">{property.baths}</div>
+            </div>
+            
+            <div className="flex flex-col items-center">
+              <div className="bg-primary/10 p-3 rounded-full mb-2">
+                <SquareFeet className="h-5 w-5 text-primary" />
+              </div>
+              <div className="text-muted-foreground text-sm">Area</div>
+              <div className="font-semibold">{property.sqft} sqft</div>
+            </div>
+            
+            <div className="flex flex-col items-center">
+              <div className="bg-primary/10 p-3 rounded-full mb-2">
+                <Calendar className="h-5 w-5 text-primary" />
+              </div>
+              <div className="text-muted-foreground text-sm">Year Built</div>
+              <div className="font-semibold">{property.yearBuilt || 'N/A'}</div>
+            </div>
+          </div>
+        </Card>
+        
+        {/* Property Description */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">About This Property</h2>
+          <p className="text-muted-foreground whitespace-pre-line">{property.description}</p>
+        </div>
+        
+        {/* Property Features */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Features</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            {property.features.map((feature, i) => (
+              <Badge key={i} variant="outline" className="py-1.5 px-3 justify-start font-normal">
+                {feature}
+              </Badge>
+            ))}
+          </div>
+        </div>
+        
+        {/* Map Section */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Location</h2>
+          <div className="aspect-video bg-muted rounded-lg overflow-hidden flex items-center justify-center">
+            <div className="text-center p-6">
+              <p className="text-muted-foreground">
+                {property.address}, {property.city}, {property.state} {property.zip}
               </p>
             </div>
           </div>
+        </div>
+        
+        {/* Call to Action */}
+        <div className="bg-primary/5 rounded-lg p-6 text-center">
+          <h2 className="text-xl font-semibold mb-2">Interested in this property?</h2>
+          <p className="text-muted-foreground mb-4">Contact our agents for more information or to schedule a viewing.</p>
+          <Button size="lg" asChild>
+            <Link to="/contact">Contact Us</Link>
+          </Button>
         </div>
       </div>
     </div>
