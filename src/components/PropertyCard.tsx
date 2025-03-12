@@ -35,7 +35,7 @@ export const PropertyCard = ({ property, className }: PropertyCardProps) => {
         <div className="absolute top-0 left-0 m-4">
           <span className={cn(
             "px-3 py-1 text-xs font-medium rounded-full text-white",
-            property.status === 'sale' ? "bg-blue-500" : "bg-amber-500"
+            property.status === 'sale' ? "bg-[#133E44]" : "bg-[#CAA988]"
           )}>
             {property.status === 'sale' ? 'For Sale' : 'For Rent'}
           </span>
@@ -93,7 +93,7 @@ export const PropertyCard = ({ property, className }: PropertyCardProps) => {
       
       <Link 
         to={`/properties/${property.id}`} 
-        className="block p-3 text-center text-sm font-medium text-primary hover:text-primary/80 transition-colors border-t border-border/60"
+        className="block p-3 text-center text-sm font-medium text-[#133E44] hover:text-[#133E44]/80 transition-colors border-t border-border/60"
       >
         View Details
       </Link>

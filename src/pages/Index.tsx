@@ -3,16 +3,17 @@ import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { Hero } from '@/components/Hero';
 import { PropertyCard } from '@/components/PropertyCard';
+import { PropertyCarousel } from '@/components/PropertyCarousel';
 import { Button } from '@/components/ui/button';
 import { Building, Home, Landmark, Map } from 'lucide-react';
 import { properties } from '@/data/properties';
 import { motion } from 'framer-motion';
 
 const Index = () => {
-  // Get featured properties (latest 3)
+  // Get featured properties (latest 6)
   const featuredProperties = properties
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    .slice(0, 3);
+    .slice(0, 6);
 
   // Property category cards
   const categories = [
@@ -21,28 +22,28 @@ const Index = () => {
       description: 'Find modern apartments in prime locations',
       icon: Building,
       link: '/properties?type=apartment',
-      color: 'bg-blue-500',
+      color: 'bg-[#133E44]',
     },
     {
       title: 'Houses',
       description: 'Discover comfortable family homes',
       icon: Home,
       link: '/properties?type=house',
-      color: 'bg-green-500',
+      color: 'bg-[#758F8E]',
     },
     {
       title: 'Commercial',
       description: 'Perfect spaces for your business',
       icon: Landmark,
       link: '/properties?type=commercial',
-      color: 'bg-amber-500',
+      color: 'bg-[#CAA988]',
     },
     {
       title: 'Land',
       description: 'Premium plots with great potential',
       icon: Map,
       link: '/properties?type=land',
-      color: 'bg-purple-500',
+      color: 'bg-[#E7E0CE]',
     },
   ];
 
@@ -52,45 +53,11 @@ const Index = () => {
       <Hero />
       
       {/* Featured Properties Section */}
-      <section className="py-16 bg-secondary/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-3xl font-bold mb-4"
-            >
-              Featured Properties
-            </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="text-muted-foreground max-w-2xl mx-auto"
-            >
-              Explore our handpicked selection of premium properties available for sale and rent
-            </motion.p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {featuredProperties.map((property, index) => (
-              <PropertyCard 
-                key={property.id} 
-                property={property} 
-              />
-            ))}
-          </div>
-          
-          <div className="text-center mt-12">
-            <Button asChild size="lg" className="hover-lift">
-              <Link to="/properties">View All Properties</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <PropertyCarousel 
+        properties={featuredProperties}
+        title="Featured Properties"
+        description="Explore our handpicked selection of premium properties available for sale and rent"
+      />
       
       {/* Property Categories */}
       <section className="py-16">
@@ -210,7 +177,7 @@ const Index = () => {
       </section>
       
       {/* CTA Section */}
-      <section className="py-20 bg-primary text-primary-foreground">
+      <section className="py-20 bg-[#133E44] text-white">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -220,12 +187,12 @@ const Index = () => {
             className="max-w-3xl mx-auto space-y-6"
           >
             <h2 className="text-3xl md:text-4xl font-bold">Ready to Find Your Perfect Property?</h2>
-            <p className="text-primary-foreground/80 text-lg">
+            <p className="text-white/80 text-lg">
               Let us help you find the property that matches your needs and preferences. 
               Our team is ready to assist you every step of the way.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-              <Button asChild size="lg" variant="secondary" className="hover-lift">
+              <Button asChild size="lg" variant="secondary" className="hover-lift bg-[#E7E0CE] text-[#133E44]">
                 <Link to="/properties">Browse Properties</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="border-white/20 hover:bg-white/10 hover-lift">

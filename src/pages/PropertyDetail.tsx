@@ -6,6 +6,7 @@ import { useFavorites } from "@/context/FavoritesContext";
 import { properties } from "@/data/properties";
 import { ArrowLeft, Bed, Bath, MapPin, Ruler, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
+import { PropertyGallery } from "@/components/PropertyGallery";
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -61,13 +62,9 @@ const PropertyDetail = () => {
           </div>
         </div>
         
-        {/* Property Image */}
-        <div className="rounded-lg overflow-hidden mb-8">
-          <img 
-            src={property.images[0]} 
-            alt={property.title}
-            className="w-full h-auto object-cover md:h-[500px]"
-          />
+        {/* Property Gallery */}
+        <div className="mb-8">
+          <PropertyGallery images={property.images} title={property.title} />
         </div>
         
         {/* Property Details */}

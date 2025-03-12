@@ -5,35 +5,40 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 220 20% 10%;
+    --background: 44 42% 86%;
+    --foreground: 177 57% 17%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
+    --card: 44 42% 86%;
+    --card-foreground: 177 57% 17%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
+    --popover: 44 42% 86%;
+    --popover-foreground: 177 57% 17%;
 
-    --primary: 220 35% 15%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 177 57% 17%;
+    --primary-foreground: 44 42% 86%;
 
-    --secondary: 210 25% 95%;
-    --secondary-foreground: 220 35% 15%;
+    --secondary: 190 18% 51%;
+    --secondary-foreground: 44 42% 86%;
 
-    --muted: 210 20% 96%;
-    --muted-foreground: 220 10% 40%;
+    --muted: 33 34% 66%;
+    --muted-foreground: 177 57% 27%;
 
-    --accent: 210 30% 95%;
-    --accent-foreground: 220 35% 15%;
+    --accent: 33 34% 66%;
+    --accent-foreground: 177 57% 17%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 15% 90%;
-    --input: 220 15% 90%;
-    --ring: 222.2 84% 4.9%;
+    --border: 177 57% 17% / 10%;
+    --input: 177 57% 17% / 10%;
+    --ring: 177 57% 17% / 20%;
 
     --radius: 0.5rem;
+
+    --estate-dark: 177 57% 17%; /* #133E44 */
+    --estate-primary: 190 18% 51%; /* #758F8E */
+    --estate-light: 44 42% 86%; /* #E7E0CE */
+    --estate-accent: 33 34% 66%; /* #CAA988 */
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -46,33 +51,38 @@
   }
 
   .dark {
-    --background: 220 20% 10%;
-    --foreground: 210 40% 98%;
+    --background: 177 57% 17%;
+    --foreground: 44 42% 86%;
 
-    --card: 220 20% 10%;
-    --card-foreground: 210 40% 98%;
+    --card: 177 57% 17%;
+    --card-foreground: 44 42% 86%;
 
-    --popover: 220 20% 10%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 177 57% 17%;
+    --popover-foreground: 44 42% 86%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 220 35% 15%;
+    --primary: 44 42% 86%;
+    --primary-foreground: 177 57% 17%;
 
-    --secondary: 220 25% 20%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 190 18% 31%;
+    --secondary-foreground: 44 42% 86%;
 
-    --muted: 220 20% 20%;
-    --muted-foreground: 215 20% 70%;
+    --muted: 177 57% 27%;
+    --muted-foreground: 33 34% 86%;
 
-    --accent: 220 25% 20%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 33 34% 46%;
+    --accent-foreground: 44 42% 86%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 220 25% 20%;
-    --input: 220 25% 20%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 44 42% 86% / 10%;
+    --input: 44 42% 86% / 10%;
+    --ring: 44 42% 86% / 20%;
+
+    --estate-dark: 44 42% 86%; /* Inverted for dark mode */
+    --estate-primary: 190 18% 31%; /* Darker version for dark mode */
+    --estate-light: 177 57% 17%; /* Inverted for dark mode */
+    --estate-accent: 33 34% 46%; /* Darker version for dark mode */
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -132,6 +142,10 @@
   .property-grid {
     @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8;
   }
+
+  .mobile-bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 bg-background border-t border-border/60 md:hidden z-50;
+  }
 }
 
 /* Page Transitions */
@@ -158,3 +172,4 @@
 
 /* Import Inter font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
