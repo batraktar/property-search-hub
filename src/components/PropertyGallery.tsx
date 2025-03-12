@@ -78,7 +78,7 @@ export const PropertyGallery: React.FC<PropertyGalleryProps> = ({ images, title 
               >
                 <img 
                   src={image} 
-                  alt={`${title} - Photo ${index + 1}`}
+                  alt={`${title} - Фото ${index + 1}`}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -86,13 +86,44 @@ export const PropertyGallery: React.FC<PropertyGalleryProps> = ({ images, title 
           </div>
         </div>
         
-        {/* Mobile Controls */}
+        {/* Mobile Controls - додаємо кнопки для навігації */}
+        <div className="absolute inset-y-0 left-0 flex items-center">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-8 w-8 bg-background/80 backdrop-blur-sm rounded-full ml-2"
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePrevious();
+            }}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+        </div>
+
+        <div className="absolute inset-y-0 right-0 flex items-center">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-8 w-8 bg-background/80 backdrop-blur-sm rounded-full mr-2"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleNext();
+            }}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+        
         <div className="absolute bottom-4 right-4 flex space-x-2">
           <Button 
             variant="outline" 
             size="icon" 
             className="h-8 w-8 bg-background/80 backdrop-blur-sm rounded-full"
-            onClick={toggleAutoplay}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleAutoplay();
+            }}
           >
             {isAutoplay ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
           </Button>
@@ -108,7 +139,10 @@ export const PropertyGallery: React.FC<PropertyGalleryProps> = ({ images, title 
                   "w-2 h-2 rounded-full transition-colors",
                   index === currentIndex ? "bg-white" : "bg-white/40"
                 )}
-                onClick={() => setCurrentIndex(index)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIndex(index);
+                }}
               />
             ))}
           </div>
@@ -124,10 +158,36 @@ export const PropertyGallery: React.FC<PropertyGalleryProps> = ({ images, title 
         >
           <img 
             src={images[0]} 
-            alt={`${title} - Main Photo`}
+            alt={`${title} - Головне фото`}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300" />
+          
+          {/* Додаємо кнопки для керування слайдером на десктопі */}
+          <div className="absolute inset-0 flex items-center justify-between px-4 opacity-0 hover:opacity-100 transition-opacity">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-10 w-10 bg-background/80 backdrop-blur-sm rounded-full"
+              onClick={(e) => {
+                e.stopPropagation();
+                openFullscreen(images.length - 1);
+              }}
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-10 w-10 bg-background/80 backdrop-blur-sm rounded-full"
+              onClick={(e) => {
+                e.stopPropagation();
+                openFullscreen(1);
+              }}
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
         
         {/* Thumbnails */}
@@ -140,7 +200,7 @@ export const PropertyGallery: React.FC<PropertyGalleryProps> = ({ images, title 
             >
               <img 
                 src={image} 
-                alt={`${title} - Photo ${index + 2}`}
+                alt={`${title} - Фото ${index + 2}`}
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300" />
@@ -155,11 +215,11 @@ export const PropertyGallery: React.FC<PropertyGalleryProps> = ({ images, title 
             >
               <img 
                 src={images[4]} 
-                alt={`${title} - Photo 5`}
+                alt={`${title} - Фото 5`}
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-black/50 hover:bg-black/60 transition-colors duration-300 flex items-center justify-center">
-                <span className="text-white font-medium text-lg">+{images.length - 4} more</span>
+                <span className="text-white font-medium text-lg">+{images.length - 4} більше</span>
               </div>
             </div>
           )}
@@ -191,7 +251,7 @@ export const PropertyGallery: React.FC<PropertyGalleryProps> = ({ images, title 
             <div className="w-full h-full flex items-center justify-center">
               <img 
                 src={images[fullscreenIndex]} 
-                alt={`${title} - Fullscreen Photo ${fullscreenIndex + 1}`}
+                alt={`${title} - Повноекранне фото ${fullscreenIndex + 1}`}
                 className="max-h-full max-w-full object-contain p-4"
               />
             </div>

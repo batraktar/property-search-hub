@@ -5,18 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, Heart, Home, Search, Building, User, MessageSquare } from 'lucide-react';
 import { useFavorites } from '@/context/FavoritesContext';
 import { cn } from '@/lib/utils';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const { favorites } = useFavorites();
 
   const navLinks = [
-    { name: 'Home', path: '/', icon: Home },
-    { name: 'Properties', path: '/properties', icon: Building },
-    { name: 'About', path: '/about', icon: User },
-    { name: 'Contact', path: '/contact', icon: MessageSquare }
+    { name: 'Головна', path: '/', icon: Home },
+    { name: 'Об\'єкти', path: '/properties', icon: Building },
+    { name: 'Про нас', path: '/about', icon: User },
+    { name: 'Контакти', path: '/contact', icon: MessageSquare }
   ];
 
   useEffect(() => {
@@ -32,17 +32,12 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    // Close mobile menu when route changes
-    setIsMobileMenuOpen(false);
-  }, [location.pathname]);
-
   return (
     <>
-      {/* Desktop navbar */}
+      {/* Desktop navbar - залишаємо для десктопів */}
       <header 
         className={cn(
-          "fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out",
+          "fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out md:block hidden",
           isScrolled 
             ? "bg-background/90 shadow-sm backdrop-blur-md py-3"
             : "bg-transparent py-5"
@@ -84,13 +79,13 @@ export const Navbar = () => {
             </Link>
             <Link to="/contact">
               <Button variant="default" className="shadow-sm hover-lift focus-ring">
-                Contact Us
+                Зв'язатися
               </Button>
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex items-center space-x-3 md:hidden">
+          {/* Mobile Sheet Menu Trigger - тільки показуємо на мобільних */}
+          <div className="flex md:hidden items-center space-x-3 absolute top-4 right-4 z-50">
             <Link to="/favorites" className="relative">
               <Button variant="ghost" size="icon" className="focus-ring">
                 <Heart className={cn("h-5 w-5", favorites.length > 0 ? "fill-red-500 text-red-500" : "")} />
@@ -101,46 +96,56 @@ export const Navbar = () => {
                 )}
               </Button>
             </Link>
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="focus-ring"
-            >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  className="focus-ring"
+                >
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="bottom" className="md:hidden h-[70vh]">
+                <div className="py-6 px-4 space-y-6">
+                  <h3 className="text-lg font-semibold mb-4">Меню</h3>
+                  <div className="space-y-3">
+                    {navLinks.map(link => (
+                      <Link
+                        key={link.path}
+                        to={link.path}
+                        className={cn(
+                          "flex items-center py-2 px-4 text-sm font-medium rounded-md transition-colors",
+                          location.pathname === link.path 
+                            ? "bg-primary/10 text-primary" 
+                            : "text-muted-foreground hover:bg-primary/5"
+                        )}
+                      >
+                        <link.icon className="mr-3 h-5 w-5" />
+                        {link.name}
+                      </Link>
+                    ))}
+                  </div>
+                  <div className="pt-6 border-t border-border">
+                    <Link to="/contact" className="w-full">
+                      <Button variant="default" className="w-full shadow-sm">
+                        Зв'язатися з нами
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
-
-        {/* Mobile Menu Dropdown */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 w-full bg-background/95 backdrop-blur-md border-b border-border shadow-md animate-slide-down">
-            <div className="container mx-auto px-4 py-4 space-y-3">
-              {navLinks.map(link => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={cn(
-                    "block py-2 px-4 text-sm font-medium rounded-md transition-colors",
-                    location.pathname === link.path 
-                      ? "bg-primary/5 text-primary" 
-                      : "text-muted-foreground hover:bg-primary/5"
-                  )}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              <div className="pt-3 border-t border-border">
-                <Link to="/contact" className="w-full">
-                  <Button variant="default" className="w-full shadow-sm">
-                    Contact Us
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
       </header>
+
+      {/* Лого для мобільних пристроїв */}
+      <div className="md:hidden fixed top-4 left-4 z-50">
+        <Link to="/" className="flex items-center">
+          <span className="text-xl font-semibold tracking-tight">Estate<span className="text-accent">Hub</span></span>
+        </Link>
+      </div>
 
       {/* Mobile Bottom Navigation */}
       <div className="mobile-bottom-nav">
@@ -173,7 +178,7 @@ export const Navbar = () => {
                 {favorites.length}
               </span>
             )}
-            <span className="text-xs">Favorites</span>
+            <span className="text-xs">Обрані</span>
           </Link>
         </div>
       </div>

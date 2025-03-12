@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 interface LayoutProps {
   children?: React.ReactNode;
-  className?: string; // Додали className до інтерфейсу
+  className?: string;
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children, className }) => {
@@ -16,7 +16,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, className }) => {
   return (
     <div className={`flex flex-col min-h-screen ${className || ''}`}>
       <Navbar />
-      <main className="flex-1 md:pt-0 pb-16 md:pb-0"> {/* Added padding bottom for mobile navigation */}
+      <main className="flex-1 md:pt-0 pb-16 md:pb-0"> {/* Залишаємо padding bottom для мобільного меню */}
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}

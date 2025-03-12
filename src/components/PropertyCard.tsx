@@ -37,7 +37,7 @@ export const PropertyCard = ({ property, className }: PropertyCardProps) => {
             "px-3 py-1 text-xs font-medium rounded-full text-white",
             property.status === 'sale' ? "bg-[#133E44]" : "bg-[#CAA988]"
           )}>
-            {property.status === 'sale' ? 'For Sale' : 'For Rent'}
+            {property.status === 'sale' ? 'Продаж' : 'Оренда'}
           </span>
         </div>
         <Button
@@ -61,11 +61,15 @@ export const PropertyCard = ({ property, className }: PropertyCardProps) => {
         <div className="flex justify-between items-center">
           <div>
             <span className="text-lg font-semibold">{property.currency === 'USD' ? '$' : '₴'}{property.price.toLocaleString()}</span>
-            {property.status === 'rent' && <span className="text-muted-foreground text-sm"> /month</span>}
+            {property.status === 'rent' && <span className="text-muted-foreground text-sm"> /місяць</span>}
           </div>
           <div className="flex items-center text-sm text-muted-foreground">
             <Building className="h-4 w-4 mr-1" />
-            <span>{property.type.charAt(0).toUpperCase() + property.type.slice(1)}</span>
+            <span>{property.type === 'apartment' ? 'Квартира' : 
+                  property.type === 'house' ? 'Будинок' : 
+                  property.type === 'condo' ? 'Кондо' : 
+                  property.type === 'villa' ? 'Вілла' : 
+                  property.type.charAt(0).toUpperCase() + property.type.slice(1)}</span>
           </div>
         </div>
 
@@ -73,20 +77,22 @@ export const PropertyCard = ({ property, className }: PropertyCardProps) => {
           {property.bedrooms && (
             <div className="flex items-center text-sm text-muted-foreground">
               <Bed className="h-4 w-4 mr-1" />
-              <span>{property.bedrooms} {property.bedrooms === 1 ? 'Bed' : 'Beds'}</span>
+              <span>{property.bedrooms} {property.bedrooms === 1 ? 'Спальня' : 
+                    property.bedrooms < 5 ? 'Спальні' : 'Спалень'}</span>
             </div>
           )}
           
           {property.bathrooms && (
             <div className="flex items-center text-sm text-muted-foreground">
               <Bath className="h-4 w-4 mr-1" />
-              <span>{property.bathrooms} {property.bathrooms === 1 ? 'Bath' : 'Baths'}</span>
+              <span>{property.bathrooms} {property.bathrooms === 1 ? 'Ванна' : 
+                    property.bathrooms < 5 ? 'Ванни' : 'Ванн'}</span>
             </div>
           )}
           
           <div className="flex items-center text-sm text-muted-foreground">
             <Ruler className="h-4 w-4 mr-1" />
-            <span>{property.area} m²</span>
+            <span>{property.area} м²</span>
           </div>
         </div>
       </div>
@@ -95,7 +101,7 @@ export const PropertyCard = ({ property, className }: PropertyCardProps) => {
         to={`/properties/${property.id}`} 
         className="block p-3 text-center text-sm font-medium text-[#133E44] hover:text-[#133E44]/80 transition-colors border-t border-border/60"
       >
-        View Details
+        Докладніше
       </Link>
     </motion.div>
   );
