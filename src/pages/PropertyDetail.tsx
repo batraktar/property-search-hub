@@ -42,7 +42,7 @@ const PropertyDetail = () => {
             <h1 className="text-3xl font-bold mb-2">{property.title}</h1>
             <div className="flex items-center text-muted-foreground">
               <MapPin className="h-4 w-4 mr-1" />
-              <span>{property.location.address}, {property.location.city}</span>
+              <span>{property.address}, {property.city}</span>
             </div>
           </div>
           <div className="mt-4 md:mt-0 flex items-center">
@@ -64,7 +64,7 @@ const PropertyDetail = () => {
         {/* Property Image */}
         <div className="rounded-lg overflow-hidden mb-8">
           <img 
-            src={property.image} 
+            src={property.images[0]} 
             alt={property.title}
             className="w-full h-auto object-cover md:h-[500px]"
           />
@@ -93,7 +93,7 @@ const PropertyDetail = () => {
                 <div className="flex items-center">
                   <Ruler className="h-5 w-5 mr-2 text-muted-foreground" />
                   <div>
-                    <p className="font-medium">{property.squareFootage}</p>
+                    <p className="font-medium">{property.area}</p>
                     <p className="text-sm text-muted-foreground">Sq Ft</p>
                   </div>
                 </div>
@@ -155,7 +155,7 @@ const PropertyDetail = () => {
                 <span className="ml-2 text-muted-foreground">Map View</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                {property.location.address}, {property.location.city}, {property.location.state} {property.location.zipCode}
+                {property.address}, {property.city}
               </p>
             </div>
           </div>

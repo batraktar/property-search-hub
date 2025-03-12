@@ -7,13 +7,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 interface LayoutProps {
   children?: React.ReactNode;
+  className?: string; // Додали className до інтерфейсу
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children }) => {
+export const Layout: React.FC<LayoutProps> = ({ children, className }) => {
   const location = useLocation();
   
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen ${className || ''}`}>
       <Navbar />
       <main className="flex-1">
         <AnimatePresence mode="wait">
